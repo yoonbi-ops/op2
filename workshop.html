@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>행궁동 워크샵: 5월의 어느 날</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background-color: #F9F8F6; 
+            font-family: 'Noto Serif KR', serif; 
+            font-weight: 300; 
+            color: #4A4A4A; 
+            line-height: 1.9; 
+            word-break: keep-all; 
+            overflow-x: hidden;
+            cursor: default;
+        }
+        .cover-page { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background-image: url('이미지1.png'); background-size: cover; background-position: center; position: relative; color: #FFFFFF; }
+        .cover-page::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); }
+        .cover-title { position: relative; z-index: 1; }
+        .cover-title .cover-heading span { opacity: 0; animation: typing 0.5s forwards; }
+        .cover-title h1 { font-family: 'Bebas Neue', sans-serif; font-size: 7rem; font-weight: 400; letter-spacing: 4px; margin: 0; }
+        .cover-title p { font-family: 'Noto Serif KR', serif; font-size: 1.5rem; letter-spacing: 2px; margin-top: 15px; opacity: 0; animation: fadeIn 1s 1.5s forwards; }
+        .sub-phrase { font-size: 1.1rem; line-height: 1.8; margin-top: 40px; letter-spacing: 1px; opacity: 0; animation: fadeIn 1s 2.2s forwards; }
+        .scroll-arrow { position: absolute; bottom: 40px; z-index: 1; width: 24px; height: 24px; animation: bounce 2s infinite; opacity: 1; transition: opacity 0.5s; cursor: pointer; }
+        .scroll-arrow.hidden { opacity: 0; pointer-events: none; }
+        .scroll-arrow span { display: block; width: 24px; height: 24px; border-bottom: 2px solid #fff; border-right: 2px solid #fff; transform: rotate(45deg); }
+        @keyframes typing { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 60% { transform: translateY(-10px); } }
+        .menu-button {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            width: 30px;
+            height: 24px;
+            z-index: 10002;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .menu-button span {
+            width: 100%;
+            height: 2px;
+            background-color: #FFF;
+            display: block;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        .menu-button.scrolled:not(.open) span { background-color: #333; }
+        .menu-button.open span:nth-child(1) { transform: translateY(11px) rotate(135deg); }
+        .menu-button.open span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
+        .menu-button.open span:nth-child(3) { transform: translateY(-11px) rotate(-135deg); }
+        .menu-button.open span { background-color: #333; }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(249, 248, 246, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+        }
+        .menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .menu-nav { list-style: none; padding: 0; text-align: center; }
+        .menu-nav li {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s, transform 0.4s;
+        }
+        .menu-overlay.open .menu-nav li { opacity: 1; transform: translateY(0); }
+        .menu-overlay.open .menu-nav li:nth-child(1) { transition-delay: 0.1s; }
+        .menu-overlay.open .menu-nav li:nth-child(2) { transition-delay: 0.15s; }
+        .menu-overlay.open .menu-nav li:nth-child(3) { transition-delay: 0.2s; }
+        .menu-overlay.open .menu-nav li:nth-child(4) { transition-delay: 0.25s; }
+        .menu-overlay.open .menu-nav li:nth-child(5) { transition-delay: 0.3s; }
+        .menu-overlay.open .menu-nav li:nth-child(6) { transition-delay: 0.35s; }
+        .menu-nav a {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            color: #4A4A4A;
+            text-decoration: none;
+            padding: 15px 0;
+            display: inline-block;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        .menu-nav a:hover { color: #2E8B57; }
+        
+        .content-section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 100px 40px; box-sizing: border-box; }
+        .details-container{width:100%;min-height:100vh;background-color:#F9F8F6;display:flex;justify-content:center;align-items:center;padding:40px;box-sizing:border-box}.cutlery-drawer{display:flex;gap:20px}.cutlery-item{position:relative;width:120px;height:350px;padding-top:20px; cursor: pointer;}.cutlery-item svg{width:50px;height:auto;position:absolute;top:0;left:50%;transform:translateX(-50%);fill:#555;transition:transform .5s cubic-bezier(.6,-.28,.735,.045)}.cutlery-label{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#333;writing-mode:vertical-rl;letter-spacing:2px}.detail-text{position:absolute;bottom:0;left:50%;transform:translateX(-50%);text-align:center;width:100%;font-size:.9rem;line-height:1.6;opacity:0;transition:opacity .4s .2s}.cutlery-item.pulled svg{transform:translate(-50%,60px)}.cutlery-item.pulled .detail-text{opacity:1}
+        
+        /* Schedule Page */
+        #schedule-page .split-container{display:flex;width:100%;min-height:100vh}
+        #schedule-page .left-column{width:40%;max-width:500px;min-width:400px;height:100vh;position:sticky;top:0;background-color:#FFF;padding:50px;box-sizing:border-box;border-right:1px solid #EAEAEA}
+        #schedule-page .main-title{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:#2C2C2C;margin-bottom:40px}
+        #schedule-page .schedule-table{width:100%;border-collapse:collapse}
+        #schedule-page .schedule-table tr{transition:background-color .2s; cursor: pointer;}
+        #schedule-page .schedule-table tr.active{background-color:#EBF5FF}
+        #schedule-page .schedule-table th,#schedule-page .schedule-table td{padding:20px 15px;text-align:left;border-bottom:1px solid #F0F0F0}
+        #schedule-page .schedule-table th{font-weight:600;color:#000;width:35%}
+        #schedule-page .right-column{flex-grow:1;padding:60px;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100vh;box-sizing:border-box}
+        #schedule-page .image-placeholder{font-size:1.2rem;color:#AAA;text-align:center}
+        #schedule-page .image-gallery{display:none;flex-direction:column;align-items:center;width:100%}
+        #schedule-page .image-gallery.active{display:flex}
+        
+        /* WOTZ SHOP Styles */
+        #goods-page { background-color: #F2F0ED; }
+        .goods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; width: 100%; max-width: 1100px; margin-top: 50px; }
+        .goods-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.3s; position: relative; }
+        .goods-card:hover { transform: translateY(-10px); }
+        .goods-image { width: 100%; height: 320px; background-color: #EAEAEA; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        .goods-image img { width: 100%; height: 100%; object-fit: cover; }
+        .goods-image::after { content: 'IMAGE COMING SOON'; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: #BBB; letter-spacing: 2px; }
+        .goods-info { padding: 25px; text-align: center; }
+        .goods-name { font-family: 'Noto Serif KR', serif; font-weight: 600; font-size: 1.2rem; margin-bottom: 10px; color: #333; }
+        .goods-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: #2E8B57; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .goods-price span { font-size: 1rem; color: #888; margin-left: 2px; }
+        .coin-icon { width: 18px; height: 18px; background-color: #FFD700; border-radius: 50%; display: inline-block; border: 1.5px solid #DAA520; }
+        .gallery-title{font-family:'Bebas Neue',sans-serif;font-size:4.2rem;color:#333;letter-spacing:1px;text-align:center;margin-bottom:40px;width:100%}
+        .gallery-grid{display:flex;flex-wrap:wrap;gap:30px;justify-content:center;width:100%}
+        .image-wrapper{display:flex;flex-direction:column;align-items:center; cursor: pointer;}
+        .image-wrapper .schedule-image{width:220px;height:280px;object-fit:cover;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.08);margin-bottom:15px;transition:transform .3s}
+        .image-wrapper:hover .schedule-image{transform:scale(1.05)}
+        .image-wrapper .image-label{font-family:'Noto Serif KR',serif;font-weight:600;font-size:.9rem;color:#333}
+        .info-section{width:100%;max-width:900px;text-align:center;margin-top:80px}
+        .info-section hr{border:0;height:1px;background-color:#EAEAEA;margin-bottom:40px}
+        .single-line-info{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:15px 30px;font-size:.9rem}
+        .single-line-info span{display:flex;align-items:center}
+        .single-line-info strong{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;font-weight:400;color:#000;margin-right:10px}
+        .single-line-info a{text-decoration:none;font-weight:600; cursor: pointer;}
+        .info-divider{color:#ddd;font-size:1.2rem}
+        .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10003; display: none; justify-content: center; align-items: center; pointer-events: none; cursor: pointer; }
+        .lightbox-overlay.open { display: flex; pointer-events: auto; }
+        .lightbox-image { max-width: 90%; max-height: 90%; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 10001; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .custom-modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .custom-modal-content {
+            background-color: #F9F8F6;
+            border-radius: 8px;
+            padding: 40px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        .custom-modal-overlay.open .custom-modal-content {
+            transform: scale(1);
+        }
+        .custom-modal-content h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: #333;
+            margin: 0 0 15px 0;
+        }
+        .custom-modal-content p {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #4A4A4A;
+            margin: 0 0 30px 0;
+        }
+        .custom-modal-content button {
+            background-color: #333;
+            color: white;
+            border: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            padding: 12px 30px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        .custom-modal-content button:hover { background-color: #000; }
+        
+        .leaf-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999; 
+        }
+        .leaf {
+            position: absolute;
+            top: -50px;
+            width: 20px;
+            height: 20px;
+            will-change: transform, opacity;
+        }
+        #story-page .story-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 550px;
+        }
+        #story-page .story-intro {
+            text-align: center;
+            animation: fadeIn 1.5s;
+        }
+        #story-page.show-webtoon .story-intro {
+            display: none;
+        }
+        #story-page .story-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        #story-page .story-artist {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 40px;
+        }
+        #story-page .next-button {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #aaa;
+            border-radius: 50%;
+            color: #aaa;
+            font-size: 2rem;
+            line-height: 48px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #story-page .next-button:hover {
+            border-color: #333;
+            color: #333;
+        }
+        #story-page .story-webtoon {
+            width: 100%;
+            display: none;
+            animation: fadeInSlow 2.5s;
+        }
+        #story-page.show-webtoon .story-webtoon {
+            display: block;
+        }
+        #story-page .webtoon-panel {
+            width: 100%;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+            border: 1px solid #eee;
+            box-sizing: border-box;
+            position: relative;
+        }
+        #story-page .webtoon-panel img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 2px;
+        }
+        #story-page .close-button {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 30px;
+            height: 30px;
+            background-color: #333;
+            color: white;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        #story-page .close-button:hover {
+            transform: scale(1.1);
+            background-color: #000;
+        }
+        
+        @keyframes fadeInSlow {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="leaf-container" id="leaf-container"></div>
+    <div class="menu-button" id="menu-button"><span></span><span></span><span></span></div>
+    
+    <div class="menu-overlay" id="menu-overlay">
+        <ul class="menu-nav">
+            <li><a href="#cover-page">Home</a></li>
+            <li><a href="#team-page">Team</a></li>
+            <li><a href="#schedule-page">Schedule</a></li>
+            <li><a href="#story-page">Story</a></li>
+            <li><a href="#goods-page">Works shop</a></li> <li><a href="javascript:void(0);" class="coming-soon">Gallery</a></li>
+        </ul>
+    </div>
+    
+    <div class="cover-page" id="cover-page">
+        <div class="cover-title">
+            <h1 class="cover-heading"></h1>
+            <p>5월, 고즈넉한 시간 속으로</p>
+            <div class="sub-phrase">행궁동에서의 추억.<br>안온하게, 오롯이.<br>우리만의 시간을 향유할 수 있도록.</div>
+        </div>
+        <a class="scroll-arrow" href="#details-page"><span></span></a>
+    </div>
+    <!-- details-page 바로 다음에 추가된 Team 페이지 -->
+<div id="team-page" class="content-section">
+    <div style="text-align: center; width: 100%; max-width: 1200px;">
+        <h1 style="font-family: 'Bebas Neue', sans-serif; font-size: 4.2rem; color: #333; letter-spacing: 1px; margin-bottom: 20px;">TEAM</h1>
+        <p style="margin-bottom: 40px; font-size: 1rem; line-height: 1.8;">
+            같은 PIZZ를 선택한 분들과 이번 워크샵에서 같은 조로 활동합니다!<br>
+            다같이 협력해서 워크코인을 획득하세요.
+        </p>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap;">
+            <img src="장소/페페로니.png" alt="페페로니 피자" style="width: 100%; max-width: 300px; height: auto; border-radius: 15px;">
+            <img src="장소/포테이토.png" alt="포테이토 피자" style="width: 100%; max-width: 300px; height: auto; border-radius: 15px;">
+            <img src="장소/베이컨.png" alt="베이컨 피자" style="width: 100%; max-width: 300px; height: auto; border-radius: 15px;">
+        </div>
+    </div>
+</div>
+    </div>
+<div id="schedule-page" class="content-section">
+        <div class="split-container">
+            <div class="left-column">
+                <h1 class="main-title">SCHEDULE</h1>
+                <table class="schedule-table">
+                    <tr data-target="session1"><th>10:30</th><td>시작과 만남</td></tr>
+                    <tr data-target="session2"><th>10:30 - 11:30</th><td>Mission.1</td></tr>
+                    <tr data-target="lunch" class="active"><th>11:30 - 13:00</th><td>점심 식사</td></tr>
+                    <tr data-target="session3"><th>13:00 - 14:00</th><td>Mission.2</td></tr>
+                    <tr data-target="session4"><th>14:00 - 14:30</th><td>두번째 장소</td></tr>
+                    <tr data-target="session5"><th>14:30 - 17:00</th><td>Team Building</td></tr>
+                    <tr data-target="session8"><th>17:30 - 19:30</th><td>저녁 식사 그리고 마무리</td></tr>
+                </table>
+            </div>
+            <div class="right-column">
+                <div class="image-placeholder" style="display: none;">스케줄을 선택하여<br>관련 이미지를 확인하세요.</div>
+                
+                <!-- '시작과 만남' 섹션 -->
+                <div id="session1-images" class="image-gallery">
+                    <img src="장소/시작과 만남.png" alt="시작과 만남 장소" style="width: 100%; max-width: 900px; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                    <div class="info-section" style="margin-top: 20px;">
+                        <div class="single-line-info">
+                            <span><a href="https://map.naver.com/p/entry/place/1836463196?placePath=/photo&c=17.96,0,0,3,dh" target="_blank" style="font-weight: bold; color: #2E8B57; font-size: 1.2rem; text-decoration: underline;">자세히 보기</a></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 'Mission.1' 섹션 -->
+                <div id="session2-images" class="image-gallery">
+                    <img src="장소/미션1.png" alt="미션 1" style="width: 100%; max-width: 800px; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                </div>
+                
+                <!-- 'Mission.2' 섹션 -->
+                <div id="session3-images" class="image-gallery">
+                    <img src="장소/미션2.png" alt="미션 2" style="width: 100%; max-width: 800px; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                </div>
+                <!-- '두번째 장소' 섹션 -->
+                <div id="session4-images" class="image-gallery">
+                    <img src="장소/두번째.png" alt="두번째 장소" style="width: 100%; max-width: 700px; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                </div>
+                <!-- 'Team Building' 섹션 -->
+                <div id="session5-images" class="image-gallery">
+                    <h2 class="gallery-title">TEAM BUILDING</h2>
+                    <style>
+                        /* 팀빌딩 섹션 전용 스타일 */
+                        .team-building-container {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 60px; /* 원 사이의 간격 */
+                            width: 100%;
+                            padding: 40px 0;
+                        }
+                        .circle-item {
+                            width: 250px;
+                            height: 250px;
+                            border: 3px solid #b0a99c;
+                            border-radius: 50%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            text-align: center;
+                            font-size: 1.3rem;
+                            font-weight: 600;
+                            color: #5a5a5a;
+                            transition: all 0.3s ease;
+                            padding: 20px;
+                            box-sizing: border-box;
+                        }
+                        .circle-item.clickable {
+                            cursor: pointer;
+                        }
+                        .circle-item.clickable:hover {
+                            background-color: #e9e5e0;
+                            border-color: #2E8B57;
+                            color: #2E8B57;
+                            transform: scale(1.05);
+                        }
+                    </style>
+                    <div class="team-building-container">
+                        <div id="gomak-circle" class="circle-item clickable">
+                            스페셜 MC와 함께하는<br>고막 여친
+                        </div>
+                        <div class="circle-item">
+                            기타<br>게임 진행
+                        </div>
+                    </div>
+                </div>
+                <!-- '저녁 식사 그리고 마무리' 섹션 -->
+                <div id="session8-images" class="image-gallery">
+                    <h2 class="gallery-title">DINNER</h2>
+                    <div class="gallery-grid">
+                        <div class="image-wrapper">
+                            <img src="부삼로고.png" class="schedule-image" alt="부삼 로고">
+                            <span class="image-label">로고</span>
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="삼겹살.jpg" class="schedule-image" alt="삼겹살">
+                            <span class="image-label">삼겹살</span>
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="쌈.jpg" class="schedule-image" alt="쌈">
+                            <span class="image-label">쌈</span>
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="볶음밥.jpg" class="schedule-image" alt="볶음밥">
+                            <span class="image-label">볶음밥</span>
+                        </div>
+                        <div class="image-wrapper">
+                            <video src="비디오.MP4" class="schedule-image" autoplay loop muted playsinline></video>
+                            <span class="image-label">술</span>
+                        </div>
+                    <div class="info-section">
+                        <hr>
+                        <div class="single-line-info">
+                            <span><strong>LOCATION</strong> 경기 수원시 팔달구 향교로 30 2층</span>
+                            <span class="info-divider">|</span>
+                            <span><strong>HOMEPAGE</strong> <a href="https://map.naver.com/p/search/%EC%88%98%EC%9B%90%EC%97%AD%20%EB%B6%80%EC%B6%94%EC%82%BC%EA%B2%B9%EC%82%B4/place/36615363?c=15.00,0,0,0,adh&isMini=true&p=WbX3g5Um3BJMFvrRJZRA5A,160.56,29.25,80,Float&placePath=/home?from=map&fromPanelNum=2&timestamp=202604211048&locale=ko&svcName=map_pcv5&searchText=%EC%88%98%EC%9B%90%EC%97%AD%20%EB%B6%80%EC%B6%94%EC%82%BC%EA%B2%B9%EC%82%B4" target="_blank">네이버 지도 바로가기</a></span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div id="lunch-images" class="image-gallery active">
+                    <h2 class="gallery-title">LUNCH</h2>
+                    <div class="gallery-grid">
+                        <div class="image-wrapper"><img src="이미지13.png" class="schedule-image"><span class="image-label">로고</span></div>
+                        <div class="image-wrapper"><img src="이미지10.png" class="schedule-image"><span class="image-label">외부</span></div>
+                        <div class="image-wrapper"><img src="이미지9.png" class="schedule-image"><span class="image-label">내부</span></div>
+                        <div class="image-wrapper"><img src="이미지12.png" class="schedule-image"><span class="image-label">식사</span></div>
+                        <div class="image-wrapper"><img src="이미지11.png" class="schedule-image"><span class="image-label">대표 메뉴</span></div>
+                    </div>
+                    <div class="info-section">
+                        <hr>
+                        <div class="single-line-info">
+                            <span><strong>LOCATION</strong> 경기 수원시 팔달구 신풍로23번길 59 1층</span>
+                            <span class="info-divider">|</span>
+                            <span><strong>HOMEPAGE</strong> <a href="https://map.naver.com/p/search/%ED%96%89%EA%B6%81%EB%8F%99%20%EB%A1%9C%EC%9A%B0%ED%8C%8C%EC%9D%B4%EB%B8%8C/place/1379692826" target="_blank">로우파이브 - 네이버지도</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="story-page" class="content-section">
+        <div class="story-wrapper">
+            <div class="story-intro">
+                <h2 class="story-title">우리가 만들 이야기</h2>
+                <p class="story-artist">作品 강민기</p>
+                <div class="next-button">&gt;</div>
+            </div>
+            <div class="story-webtoon">
+                <div class="webtoon-panel">
+                    <div class="close-button">×</div>
+                    <img src="webtoon.png" alt="우리의 웹툰 이야기">
+                </div>
+            </div>
+        </div>
+    </div>
+<div id="goods-page" class="content-section">
+        <h2 class="gallery-title" style="margin-bottom: 10px;"> Works shop</h2>
+        
+        <div style="text-align: center; margin-bottom: 30px;">
+            <p style="color: #888; margin: 0 0 8px 0; font-size: 0.9rem;">미션으로 획득한 워크코인으로 마음에 드는 웟즈상품을 골라 교환해보세요.</p>
+            <p style="color: #e67e22; font-weight: bold; font-size: 0.9rem; background: #fff5eb; display: inline-block; padding: 4px 12px; border-radius: 20px; margin: 0;">
+                ⚠️ 1인당 1개 상품만 구매 가능합니다.
+            </p>
+        </div>
+        
+        <style>
+            /* 기존 스타일 유지 */
+            #goods-page .goods-image {
+                position: relative;
+                width: 100%;
+                padding-top: 100%;
+                height: 0;
+                background-color: #EAEAEA;
+                overflow: hidden;
+            }
+            #goods-page .goods-image img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: 2;
+            }
+            .goods-meta {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 5px;
+            }
+            .stock-count {
+                font-size: 0.85rem;
+                color: #666;
+                background: #f0f0f0;
+                padding: 2px 8px;
+                border-radius: 12px;
+            }
+        </style>
+        <div class="goods-grid">
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/말토우 주병세트.jpg" alt="말토우 주병세트">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">말토우 주병세트</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/십장생 수건 3종 세트.jpg" alt="십장생 수건 3종 세트">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">십장생 수건 3종 세트</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div> <span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/도원행주도 핸드크림 립밤 세트.jpg" alt="도원행주도 핸드크림 립밤 세트">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">도원행주도 핸드크림 립밤 세트</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/고려청자담음잔세트.jpg" alt="고려청자담음잔세트">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">고려청자 담음잔 세트</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/약사여래 찜질핫팩 인형.jpg" alt="약사여래 찜질핫팩 인형">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">약사여래 찜질핫팩 인형</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/신라의 미소 소스볼 세트.jpg" alt="신라의 미소 소스볼 세트">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">신라의 미소 소스볼 세트</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/나전합 손거울.jpg" alt="나전합 손거울">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">나전합 손거울</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/접이부채(도원행주).jpg" alt="접이부채(도원행주)">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">접이 부채(도원행주)</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/달빛아리 여행용 클렌져 세트.jpg" alt="달빛아리 여행용 클렌져 세트">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">달빛아리 여행용 클렌져 세트</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/밀레신라유물 유리컵.jpg" alt="밀레신라유물 유리컵">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">밀레신라유물 유리컵</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/청자 수저받침.jpg" alt="청자 수저받침">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">청자 수저받침</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/방울 소리잔.jpg" alt="방울 소리잔">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">방울 소리잔</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/니트 코스터.jpg" alt="니트 코스터">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">니트 코스터 (그린or블루)</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 2개</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-image">
+                    <img src="굿즈/반가사유상 마우스 패드.jpg" alt="반가사유상 마우스 패드">
+                </div>
+                <div class="goods-info">
+                    <div class="goods-name">반가사유상 마우스 패드</div>
+                    <div class="goods-meta">
+                        <div class="goods-price"><div class="coin-icon"></div><span>공개 예정</span></div>
+                        <div class="stock-count">판매 수량: 1개</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <div class="lightbox-overlay" id="lightbox"><img src="" alt="확대된 이미지" class="lightbox-image"></div>
+    
+    <div class="custom-modal-overlay" id="coming-soon-modal">
+        <div class="custom-modal-content">
+            <h2>Coming Soon.</h2>
+            <p>설렘 가득한 그날을 위해.<br>우리의 특별한 경험이 이윽고 펼쳐질 것입니다.</p>
+            <button id="modal-close-btn">확인</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById("menu-button");
+            const menuOverlay = document.getElementById("menu-overlay");
+            function createLeafEffect() {
+                const leafContainer = document.getElementById('leaf-container');
+                if(!leafContainer) return;
+                leafContainer.innerHTML = '';
+                const numberOfLeaves = 40; 
+                const leafColors = ['#2E8B57', '#3CB371', '#8FBC8F', '#6B8E23'];
+                
+                for (let i = 0; i < numberOfLeaves; i++) {
+                    const leaf = document.createElement('div');
+                    leaf.classList.add('leaf');
+                    
+                    const startX = Math.random() * window.innerWidth;
+                    const duration = Math.random() * 4 + 3;
+                    const delay = Math.random() * 3;
+                    
+                    const swayX = Math.random() * 150 - 75;
+                    leaf.style.left = `${startX}px`;
+                    leaf.style.width = `${Math.random() * 10 + 8}px`;
+                    leaf.style.height = `${Math.random() * 10 + 8}px`;
+                    leaf.style.backgroundColor = leafColors[Math.floor(Math.random() * leafColors.length)];
+                    leaf.style.borderRadius = '10% 90% 20% 80% / 50% 90% 10% 50%';
+                    leaf.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    
+                    leaf.animate([
+                        { transform: `translateX(0px) translateY(-50px) rotateZ(${Math.random() * 360}deg)`, opacity: 0 },
+                        { opacity: 1 },
+                        { transform: `translateX(${swayX}px) translateY(${window.innerHeight + 50}px) rotateZ(${Math.random() * 720 + 360}deg)`, opacity: 0 }
+                    ], {
+                        duration: duration * 1000,
+                        delay: delay * 1000,
+                        fill: 'forwards'
+                    });
+                    leafContainer.appendChild(leaf);
+                    
+                    setTimeout(() => {
+                        if(leaf) leaf.remove();
+                    }, (duration + delay + 1) * 1000);
+                }
+            }
+            
+            menuButton.addEventListener("click", () => {
+                menuButton.classList.toggle("open");
+                menuOverlay.classList.toggle("open");
+                
+                if (menuButton.classList.contains("open")) {
+                    setTimeout(createLeafEffect, 100);
+                }
+            });
+            const menuLinks = document.querySelectorAll(".menu-nav a");
+            menuLinks.forEach(link => {
+                link.addEventListener("click", () => {
+                    if(!link.classList.contains('coming-soon')) {
+                        menuButton.classList.remove("open");
+                        menuOverlay.classList.remove("open");
+                    }
+                });
+            });
+            function playIntroAnimation() {
+                const e = document.querySelector(".cover-heading");
+                if (!e) return;
+                const t = "HAENGGUNG-DONG";
+                e.innerHTML = "";
+                t.split("").forEach((t, n) => {
+                    const o = document.createElement("span");
+                    o.textContent = t;
+                    o.style.animationDelay = `${.1 * n}s`;
+                    e.appendChild(o);
+                });
+            }
+            playIntroAnimation();
+            const scrollArrow = document.querySelector(".scroll-arrow");
+            window.addEventListener("scroll", () => {
+                window.scrollY > 20 ? menuButton.classList.add("scrolled") : menuButton.classList.remove("scrolled");
+                if(scrollArrow) scrollArrow.classList.toggle("hidden", window.scrollY > 20);
+            });
+            const cutleryItems = document.querySelectorAll(".cutlery-item");
+            cutleryItems.forEach(e => {
+                e.addEventListener("click", () => {
+                    e.classList.contains("pulled") ? e.classList.remove("pulled") : (cutleryItems.forEach(e => e.classList.remove("pulled")), e.classList.add("pulled"));
+                });
+            });
+            const scheduleRows = document.querySelectorAll("#schedule-page .schedule-table tr");
+            const imageGalleries = document.querySelectorAll("#schedule-page .image-gallery");
+            const imagePlaceholder = document.querySelector("#schedule-page .image-placeholder");
+            if(scheduleRows.length > 0) {
+                scheduleRows.forEach(e => {
+                    e.addEventListener("click", () => {
+                        const t = e.getAttribute("data-target") + "-images";
+                        let n = !1;
+                        scheduleRows.forEach(row => row.classList.remove("active"));
+                        e.classList.add("active");
+                        imageGalleries.forEach(gallery => {
+                            gallery.id === t ? (gallery.classList.add("active"), n = !0) : gallery.classList.remove("active");
+                        });
+                        if(imagePlaceholder) imagePlaceholder.style.display = n ? "none" : "block";
+                    });
+                });
+                if(document.querySelector('#schedule-page tr[data-target="session1"]')) {
+                   document.querySelector('#schedule-page tr[data-target="session1"]').click();
+                }
+            }
+            const lightbox = document.getElementById('lightbox');
+            const scheduleImages = document.querySelectorAll('.schedule-image');
+            if (lightbox) {
+                const lightboxImage = lightbox.querySelector('.lightbox-image');
+                scheduleImages.forEach(photo => {
+                    photo.addEventListener('click', (e) => {
+                        // 비디오는 라이트박스로 열지 않도록 예외 처리
+                        if (e.target.tagName.toLowerCase() !== 'video') {
+                            const imgSrc = e.target.getAttribute('src');
+                            if (imgSrc) {
+                                lightboxImage.setAttribute('src', imgSrc);
+                                lightbox.classList.add('open');
+                            }
+                        }
+                    });
+                });
+                lightbox.addEventListener('click', (e) => {
+                    if(e.target === lightbox) {
+                        lightbox.classList.remove('open');
+                    }
+                });
+            }
+            
+            const comingSoonLinks = document.querySelectorAll(".coming-soon");
+            const comingSoonModal = document.getElementById("coming-soon-modal");
+            if (comingSoonModal) {
+                const modalCloseBtn = document.getElementById("modal-close-btn");
+                comingSoonLinks.forEach(link => {
+                    link.addEventListener("click", (e) => {
+                        e.preventDefault(); 
+                        menuButton.classList.remove("open");
+                        menuOverlay.classList.remove("open");
+                        comingSoonModal.classList.add("open");
+                    });
+                });
+                function closeModal() {
+                    comingSoonModal.classList.remove("open");
+                }
+                modalCloseBtn.addEventListener("click", closeModal);
+                comingSoonModal.addEventListener("click", (e) => {
+                    if (e.target === comingSoonModal) {
+                        closeModal();
+                    }
+                });
+            }
+            
+            const storyPage = document.getElementById('story-page');
+            const nextButton = document.querySelector('#story-page .next-button');
+            const closeButton = document.querySelector('#story-page .close-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    storyPage.classList.add('show-webtoon');
+                });
+            }
+            if(closeButton) {
+                closeButton.addEventListener('click', () => {
+                    storyPage.classList.remove('show-webtoon');
+                });
+            }
+            
+            // '고막 여친' 원 클릭 이벤트
+            const gomakCircle = document.getElementById('gomak-circle');
+            if (gomakCircle && lightbox) {
+                const lightboxImage = lightbox.querySelector('.lightbox-image');
+                
+                gomakCircle.addEventListener('click', () => {
+                    const imagePath = "장소/고막여친_최종.png";
+                    lightboxImage.setAttribute('src', imagePath);
+                    lightbox.classList.add('open');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
